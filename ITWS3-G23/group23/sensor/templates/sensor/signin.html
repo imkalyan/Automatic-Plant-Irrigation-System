@@ -1,0 +1,35 @@
+{%load static%}
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+</head>
+
+<body >
+
+  <div class="layer0">
+  <div class="layer1">
+    <div class="login">
+       <div class="login__form">
+        <form method="POST">
+
+        {% csrf_token %}
+        <div class="login__row">
+          <input type="text" class="login__input name" placeholder="Username" name="username" />
+        </div>
+
+        <div class="login__row">
+          <input type="password" class="login__input pass" placeholder="Password" name="password"/>
+        </div>
+        <button type="submit" class="login__submit" > Sign in</button>
+</form>
+        <p class="login__signup">Don't have an account? &nbsp;<a href="{% url 'register' %}">Sign up</a></p>
+
+      </div>
+    </div>
+    </div>
+  </div>
+
+</body>
+</html>

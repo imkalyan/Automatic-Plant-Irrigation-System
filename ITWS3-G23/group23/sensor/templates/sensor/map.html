@@ -1,0 +1,261 @@
+{% load staticfiles %}
+<html>
+  <head>
+  <meta name="viewport" content="width=device-width , initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Map</title>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      #floating-panel {
+        margin-left: -52px;
+      }
+      
+       #legend {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 3px solid #000;
+      }
+      #legend h3 {
+        margin-top: 0;
+      }
+      #legend img {
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function goBack() {
+        window.history.back();
+    }
+    </script>
+    <div id="floating-panel">
+      <button id="drop" onclick="drop()">View Plant Locations</button>
+      &nbsp;<input type="button" onclick="goBack()" value="Back"/>
+    </div>
+    <div id="map"></div>
+        <div id="legend"></div>
+    <script>
+  
+      var markers = [];
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 13.548883, lng: 80.0008}
+        });
+      
+        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+        var iconBase1 = 'https://maps.google.com/mapfiles/kml/pal4/';
+        var iconBase2 ='http://maps.google.com/mapfiles/kml/paddle/grn-blank.png';
+        var iconBase3 ='http://maps.google.com/mapfiles/kml/paddle/red-circle.png';
+        var iconBase4 ='http://maps.google.com/mapfiles/kml/shapes/rainy.png';
+        var iconBase5 ='http://maps.google.com/mapfiles/kml/shapes/water.png';
+        var icons = {
+          raining: {
+            name: 'Raining',
+            icon: iconBase4 
+          },
+          green: {
+            name: 'alive',
+            icon: iconBase2
+          },
+          red: {
+            name: 'dead',
+            icon: iconBase3
+          },
+          WB: {
+            name: 'waterbody',
+            icon: iconBase5
+          }
+        };
+
+        var features = [
+          {
+            type: 'raining'
+          }
+        ];
+
+        features.forEach(function(feature) {
+          var marker = new google.maps.Marker({
+            position: feature.position,
+            icon: icons[feature.type].icon,
+            map: map,
+          });
+        });
+
+        var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+      }
+      
+      function drop(){
+        clearMarkers();
+        for(var i=0;i<Number({{ no_of_plants}});i++){
+		    if({{lis}}[i] != -1)
+		    {
+          addMarkerWithTimeout({{latitude}}[i],{{longitude}}[i],i * 200,'plant'+[i],Number({{soil}}[i]),i,{{tem}}[i],{{hum}}[i],{{soil}}[i]);
+        }
+	      }
+    }
+      
+      
+     function addMarkerWithTimeout(lati,longi,timeout,name,status,i,val1,val2,val3,val4) {
+        lati = Number(lati)
+        longi = Number(longi)        
+        window.setTimeout(function(){
+                  if(status<10 ){
+                          val1 = Number(val1)
+                          val2 = Number(val2)
+                          val3 = Number(val3)
+
+                          markers.push(new google.maps.Marker({
+                          position: {lat: lati, lng: longi},
+                          map: map,
+                          title: `temparature:${val1}\nhumidity:${val2}\nsoil-moisture :${val3}\n`,
+                          label: name,
+                          icon: pinSymbol('green'),
+                          animation: google.maps.Animation.BOUNCE
+                        }));
+                  }
+                  else{
+                        lati = Number(lati)
+                        longi = Number(longi)
+                        markers.push(new google.maps.Marker({
+                        position: {lat: lati, lng: longi},   
+                        map: map,
+                        title: 'Dead Plant :(',
+                        label: name,
+                        icon: pinSymbol('red'),
+                        animation: google.maps.Animation.BOUNCE
+                        }));
+                  }
+                  if(Number({{water}}[i])>=15){
+                        var iconBas = 'https://maps.google.com/mapfiles/kml/pal4/'; 
+                        var icons = {
+                          Rain: {
+                            icon: iconBas + 'icon32.png'
+                          },
+                          WB: {
+                            icon: '{% static 'img/1.png' %}'
+                          }
+                        };
+
+                        var features = [
+                          {
+                                  position: new google.maps.LatLng(lati, longi), 
+                            type: 'Rain'
+                          },
+                          {
+                                  position: new google.maps.LatLng(13.53500, 80.010918), 
+                            type: 'WB'
+                          }
+                          
+                        ];
+
+                        features.forEach(function(feature) {
+                          var marker = new google.maps.Marker({
+                            position: feature.position,
+                            icon: icons[feature.type].icon,
+                            map: map,
+                            title: `Water-level:${Number({{level}}[1])}`
+                          });
+                        });
+
+                        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+                                    var cityCircle = new google.maps.Circle({
+                                        strokeColor: '#c1ff33',
+                                        strokeOpacity: 0.8,
+                                        strokeWeight: 2,
+                                        fillColor: '#33fcff',
+                                        fillOpacity: 0.35,
+                                        map: map,
+                                        center: {lat: lati, lng: longi},
+                                        radius: Math.sqrt(95) * 100
+                                    });
+                  }
+                  else{
+                        var iconBas = 'https://maps.google.com/mapfiles/kml/pal4/';
+                
+                        var icons = {
+                          
+                          WB: {
+                            icon: '{% static 'img/1.png' %}'
+                          }
+                        };
+
+                        var features = [
+                          {
+                                  position: new google.maps.LatLng(13.53500, 80.010918), 
+                            type: 'WB'
+                          }
+                        ];
+
+                        features.forEach(function(feature) {
+                          var marker = new google.maps.Marker({
+                            position: feature.position,
+                            icon: icons[feature.type].icon,
+                            map: map,
+                            title: `Water-level:${Number({{level}}[Number({{ no_of_plants}})-1])}` 
+                          });
+                        });                       
+                  }
+            }, timeout);
+      
+      }
+  
+      function clearMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(null);
+        }
+        markers = [];
+      }
+      
+  function pinSymbol(color) {
+    return {
+      path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+      fillColor: color,
+      fillOpacity: 1,
+      strokeColor: '#000',
+      strokeWeight: 1,
+      scale: 1,
+      labelOrigin: new google.maps.Point(0, -29)
+    };
+  }
+      
+      
+      
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqKrqR6E3c2ZVLHYrrHtRVsuN3_FcVY1U&callback=initMap">
+    </script>
+  </body>
+</html> 

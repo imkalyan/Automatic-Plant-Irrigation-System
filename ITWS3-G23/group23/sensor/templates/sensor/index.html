@@ -1,0 +1,947 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en" class="no-js"> <!--<![endif]-->
+    <head>
+         <!--meta http-equiv="refresh" content="6"-->
+        <!-- meta charec set -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <!-- Always force latest IE rendering engine or request Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <!-- Page Title -->
+        <title>group23</title>
+        <!-- Meta Description -->
+        <meta name="description" content="Blue One Page Creative HTML5 Template">
+
+        <meta name="author" content="Muhammad Morshed">
+        <!-- Mobile Specific Meta -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Google Font -->
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+        <!-- CSS
+        ================================================== -->
+        <!-- Fontawesome Icon font -->
+        <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+        <link rel="stylesheet" href="{% static "css/canvas.css" %}">
+        <link rel="stylesheet" href="{% static "css/map.css" %}">
+        
+        <!-- Twitter Bootstrap css -->
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+        <!-- jquery.fancybox  -->
+        <link rel="stylesheet" href="{% static "css/jquery.fancybox.css" %}">
+        <!-- animate -->
+        <link rel="stylesheet" href="{% static "css/animate.css" %}">
+        <!-- Main Stylesheet -->
+        <link rel="stylesheet" href="{% static "css/main.css" %}">
+        <!-- media-queries -->
+        <link rel="stylesheet" href="{% static "css/media-queries.css" %}">
+        <link rel="stylesheet" href="{% static "css/dropdown.css" %}">
+<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+        <!-- voice-link -->
+        <script src="{% static "js/modernizr-2.6.2.min.js" %}"></script>
+        <script src="{% static "js/js1.js" %}"></script>
+        <script src="{% static "js/js2.js" %}"></script>
+    </head>
+     <style>
+        .button {
+            background-color: #f4511e; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .button5 {background-color: #4CAF50} 
+    </style>
+
+    <body id="body">
+
+        <!-- preloader -->
+        <div id="preloader">
+            <img src="{% static "img/preloader.gif" %}" alt="Preloader">
+        </div>
+        <!-- end preloader -->
+
+        <!--
+        Fixed Navigation
+        ==================================== -->
+        <header id="navigation" class="navbar-fixed-top navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- responsive nav button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars fa-2x"></i>
+                    </button>
+                    <!-- /responsive nav button -->
+
+                    <!-- logo -->
+                    <a class="navbar-brand" href="#body">
+                        <h1 id="logo">
+                            Smart Irrigation G23
+                        </h1>
+                    </a>
+                    <!-- /logo -->
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                <!-- main nav -->
+                <nav class="collapse navbar-collapse navbar-right" role="navigation">
+                    <ul id="nav" class="nav navbar-nav">
+                        <li class="current" ><a href="#body" class= "button button5">Home</a></li>
+                        <li><a href="#facts" class= "button button5" >Dashboard</a></li>
+                        <li><a href="#graph" onclick="resetHref();" class= "button button5" >Graph</a></li>
+                        <li><input type="button" class= "button button5" onclick="location.href='{% url 'get1' %}';" value="map" /></li>
+                        <li><input type="button" class= "button button5" onclick="location.href='{% url 'addplant' %}';" value="Add plant" /></li>
+	
+                        <li><input type="button" class= "button button5" onclick="location.href='{% url 'controlcenter' %}';" value="ControlCenter" /></li>
+			
+                        <li>                                           
+                        <div class="dropdown">
+                        <button class="dropbtn">Select Plant</button>
+                        <div class="dropdown-content">
+
+                            {% for i in lis%}
+                            <input type="button" class= "btn default" onclick="location.href='/index/{{i}}';" value="plant:{{i}}"/-->
+                            {% endfor %}
+            
+                        </div>
+                        </div>
+
+                        </li>
+			<li><input type="button" class= "button button5" onclick="location.href='{% url 'deleteplant' %}';" value="Del plant" /></li>
+                        <li><input type="button" class= "button button5" onclick="location.href='{% url 'logout' %}';" value="logout" /></li>
+                        <!--li><a href="#contact">Contact</a></li-->
+                    </ul>
+                </nav>
+                    <!-- /main nav -->
+                </form>
+            </div>
+        </header>
+        <!--
+        End Fixed Navigation
+        ==================================== -->
+
+
+
+        <!--
+        Home Slider
+        ==================================== -->
+
+        <section id="slider">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                <!-- Indicators bullet -->
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                </ol>
+                <!-- End Indicators bullet -->
+
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+
+                    <!-- single slide -->
+                    <div class="item active" style="background-image: url({% static "img/banner.jpg" %});">
+                        <div class="carousel-caption">
+                            <script>
+                            responsiveVoice.speak("welcome, your weather station status is {{condition}}");
+                            </script>
+                            <h2 data-wow-duration="700ms" data-wow-delay="500ms" class="wow bounceInDown animated">WELCOME</h2>
+
+                            <h3 data-wow-duration="1000ms" class="wow slideInLeft animated"><span class="color">Showing Details of plant : </span>{{name}}<br><span class="color">plant id : </span>{{pid}}</h3>
+                            <p data-wow-duration="1000ms" class="wow slideInRight animated"></p>
+
+                            
+                        </div>
+                    </div>
+                    <!-- end single slide -->
+
+                    <!-- single slide -->
+                    <div class="item" style="background-image: url({% static "img/banner.jpg" %});">
+                        <div class="carousel-caption">
+                            <h2 data-wow-duration="500ms" data-wow-delay="500ms" class="wow bounceInDown animated"><span> {{condition}}</span>!</h2>
+                            <h3 data-wow-duration="500ms" class="wow slideInLeft animated"><span class="color"></span> </h3>
+                            <p data-wow-duration="500ms" class="wow slideInRight animated"></p>
+
+                           
+                        </div>
+                    </div>
+                    <!-- end single slide -->
+
+                </div>
+                <!-- End Wrapper for slides -->
+
+            </div>
+        </section>
+
+        <!--
+        End Home SliderEnd
+        ==================================== -->
+
+        <!--
+        Features
+        ==================================== -->
+
+
+        <section id="facts" class="facts">
+            <div class="parallax-overlay">
+                <div class="container">
+                    <div class="row number-counters">
+
+                        <div class="sec-title text-center mb50 wow rubberBand animated" data-wow-duration="1000ms">
+                            <h2>Dashboard</h2>
+                            <div class="devider"><i class="fa fa-heart-o fa-lg"></i></div>
+                        </div>
+
+                        <!-- first count item -->
+                        <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInUp animated" data-wow-duration="500ms">
+                            <div class="counters-item">
+                                    <div class="chart">
+                        <div class="ring-chart" data-progress="70">
+                                <div class="circle">
+                                        <div class="mask full">
+                                                <div class="fill bg"></div>
+                                        </div>
+                                        <div class="mask half">
+                                                <div class="fill bg"></div>
+                                                <div class="fill bg fix"></div>
+                                        </div>
+                                </div>
+                                <div class="ring-fill bg"></div>
+                        </div>
+                </div>
+
+                                <!--i class="fa fa-clock-o fa-3x"></i-->
+                        <script src="https://code.highcharts.com/highcharts.js"></script>
+                        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+                    <div id="container1" style="min-width: 280px; max-width: 200px; height: 250px; margin: 0 auto"></div>
+                    <script>
+
+Highcharts.chart('container1', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: ''
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 200,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'cms'
+        },
+        plotBands: [{
+            from: 0,
+            to: 120,
+            color: '#55BF3B' // green
+        }, {
+            from: 120,
+            to: 160,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 160,
+            to: 200,
+            color: '#DF5353' // red
+        }]
+    },
+
+    series: [{
+        name: 'waterlevel',
+        data: [Number({{level}})],
+        tooltip: {
+            valueSuffix: ' lit/min'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+            var point = chart.series[0].points[0],
+                newVal,
+                //inc = Math.round((Math.random() - 0.5) * 20);
+
+            newVal = point.y + inc;
+            if (newVal < 0 || newVal > 200) {
+                newVal = point.y - inc;
+            }
+
+            point.update(newVal);
+
+        }, 3000);
+    }
+});
+        </script>
+
+                                <strong data-to="{{level}}">0</strong>
+                                <!-- Set Your Number here. i,e. data-to="56" -->
+                                <p>waterlevel</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInUp animated" data-wow-duration="500ms" data-wow-delay="300ms">
+                            <div class="counters-item">
+
+                                <script src="https://code.highcharts.com/highcharts.js"></script>
+                        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+                    <div id="container2" style="min-width: 280px; max-width: 200px; height: 250px; margin: 0 auto"></div>
+                    <script>
+
+Highcharts.chart('container2', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: ''
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 200,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'Centigrade'
+        },
+        plotBands: [{
+            from: 0,
+            to: 120,
+            color: '#55BF3B' // green
+        }, {
+            from: 120,
+            to: 160,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 160,
+            to: 200,
+            color: '#DF5353' // red
+        }]
+    },
+
+    series: [{
+        name: 'TEMPERATURE',
+        data: [Number({{tem}})],
+        tooltip: {
+            valueSuffix: 'Centigrade'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+            var point = chart.series[0].points[0],
+                newVal,
+                //inc = Math.round((Math.random() - 0.5) * 20);
+
+            newVal = point.y + inc;
+            if (newVal < 0 || newVal > 200) {
+                newVal = point.y - inc;
+            }
+
+            point.update(newVal);
+
+        }, 3000);
+    }
+});
+        </script>
+                                <strong data-to="{{tem}}">0</strong>
+                                <!-- Set Your Number here. i,e. data-to="56" -->
+                                <p>TEMPERATURE</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInUp animated" data-wow-duration="500ms" data-wow-delay="600ms">
+                            <div class="counters-item">
+                                <script src="https://code.highcharts.com/highcharts.js"></script>
+                        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+                    <div id="container3" style="min-width: 280px; max-width: 200px; height: 250px; margin: 0 auto"></div>
+                    <script>
+
+Highcharts.chart('container3', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: ''
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 200,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: ''
+        },
+        plotBands: [{
+            from: 0,
+            to: 120,
+            color: '#55BF3B' // green
+        }, {
+            from: 120,
+            to: 160,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 160,
+            to: 200,
+            color: '#DF5353' // red
+        }]
+    },
+
+    series: [{
+        name: 'HUMIDITY',
+        data: [Number({{hum}})],
+        tooltip: {
+            valueSuffix: ' '
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+            var point = chart.series[0].points[0],
+                newVal,
+                //inc = Math.round((Math.random() - 0.5) * 20);
+
+            newVal = point.y + inc;
+            if (newVal < 0 || newVal > 200) {
+                newVal = point.y - inc;
+            }
+
+            point.update(newVal);
+
+        }, 3000);
+    }
+});
+        </script>
+                                <strong data-to="{{hum}}">0</strong>
+                                <!-- Set Your Number here. i,e. data-to="56" -->
+                                <p>HUMIDITY</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInUp animated" data-wow-duration="500ms" data-wow-delay="900ms">
+                            <div class="counters-item">
+                                <script src="https://code.highcharts.com/highcharts.js"></script>
+                        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+                    <div id="container4" style="min-width: 280px; max-width: 200px; height: 250px; margin: 0 auto"></div>
+                    <script>
+
+Highcharts.chart('container4', {
+
+    chart: {
+        type: 'gauge',
+        plotBackgroundColor: null,
+        plotBackgroundImage: null,
+        plotBorderWidth: 0,
+        plotShadow: false
+    },
+
+    title: {
+        text: ''
+    },
+
+    pane: {
+        startAngle: -150,
+        endAngle: 150,
+        background: [{
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#FFF'],
+                    [1, '#333']
+                ]
+            },
+            borderWidth: 0,
+            outerRadius: '109%'
+        }, {
+            backgroundColor: {
+                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                stops: [
+                    [0, '#333'],
+                    [1, '#FFF']
+                ]
+            },
+            borderWidth: 1,
+            outerRadius: '107%'
+        }, {
+            // default background
+        }, {
+            backgroundColor: '#DDD',
+            borderWidth: 0,
+            outerRadius: '105%',
+            innerRadius: '103%'
+        }]
+    },
+
+    // the value axis
+    yAxis: {
+        min: 0,
+        max: 200,
+
+        minorTickInterval: 'auto',
+        minorTickWidth: 1,
+        minorTickLength: 10,
+        minorTickPosition: 'inside',
+        minorTickColor: '#666',
+
+        tickPixelInterval: 30,
+        tickWidth: 2,
+        tickPosition: 'inside',
+        tickLength: 10,
+        tickColor: '#666',
+        labels: {
+            step: 2,
+            rotation: 'auto'
+        },
+        title: {
+            text: 'lit/min'
+        },
+        plotBands: [{
+            from: 0,
+            to: 120,
+            color: '#55BF3B' // green
+        }, {
+            from: 120,
+            to: 160,
+            color: '#DDDF0D' // yellow
+        }, {
+            from: 160,
+            to: 200,
+            color: '#DF5353' // red
+        }]
+    },
+
+    series: [{
+        name: 'SOILMOISTURE',
+        data: [Number({{soil}})],
+        tooltip: {
+            valueSuffix: ' lit/min'
+        }
+    }]
+
+},
+// Add some life
+function (chart) {
+    if (!chart.renderer.forExport) {
+        setInterval(function () {
+            var point = chart.series[0].points[0],
+                newVal,
+                //inc = Math.round((Math.random() - 0.5) * 20);
+
+            newVal = point.y + inc;
+            if (newVal < 0 || newVal > 200) {
+                newVal = point.y - inc;
+            }
+
+            point.update(newVal);
+
+        }, 3000);
+    }
+});
+        </script>
+                                <strong data-to="{{soil}}">0</strong>
+                                <!-- Set Your Number here. i,e. data-to="56" -->
+                                <p>SOILMOISTURE</p>
+                            </div>
+                        </div>
+                        <!-- end first count item --><br><br><br><br><br>
+                        <h2 align="center" style= "color: "white"">condition:{{condition}}</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--
+        End Features
+        ==================================== -->
+
+
+        <!--
+        Our Works
+        ==================================== -->
+             
+        <!--
+        End Our Works
+        ==================================== -->
+
+        <!--
+        Meet Our Team
+        ==================================== -->
+        <section id="graph" class="team" align="center">
+        <div class="content" align="center">
+            <div style="width:80%;" align="center">
+                <canvas id="canvas"></canvas>
+            </div>
+		
+            <script>
+                var config = {
+                    type: 'line',
+                    data: {
+                        labels: ["Time", "Time","Time","Time","Time","Time","Time","Time","Time"],
+                        //labels: {{timeval}},
+                        datasets: [{
+                            label: "WATER LEVEL",
+                            fill: false,
+                            backgroundColor: window.chartColors.red,
+                            borderColor: window.chartColors.red,
+                            //arrayOfNumbers = [7, 7, 6, 6, 7, 5, 5],
+                            //arrayOfNumbers = al_water.map(Number),
+                            //data : [arrayOfNumbers]
+                            //data: [7, 7, 6, 6, 7, 5, 5],
+                            data: {{al_water}}
+                            //fill: false,
+                        }, {
+                            label: "temperature",
+                            fill: false,
+                            backgroundColor: window.chartColors.blue,
+                            borderColor: window.chartColors.blue,
+                            //arrayOfNumbers = [30, 30, 31, 30 , 31, 29,29],
+                            //arrayOfNumbers = al_tem.map(Number),
+                            //data : [arrayOfNumbers]
+                            data : {{al_tem}}
+                            //data: [30, 30, 31, 30 , 31, 29,29],
+                            //fill: false,
+                        },
+                        {
+                            label: "HUMIDITY",
+                            fill: false,
+                            backgroundColor: window.chartColors.green,
+                            borderColor: window.chartColors.green,
+                            //arrayOfNumbers = [85, 84, 80, 79, 82, 86, 86],
+                            //arrayOfNumbers = al_hum.map(Number),
+                            //data : [arrayOfNumbers]
+                            data : {{al_hum}}
+                            //data: [85, 84, 80, 79, 82, 86, 86],
+                            //fill: false,
+                        }, {
+                            label: "SOIL MOISTURE",
+                            fill: false,
+                            backgroundColor: window.chartColors.orange,
+                            borderColor: window.chartColors.orange,
+                            //arrayOfNumbers = [6, 6, 7, 7, 9, 9, 67],
+                            //arrayOfNumbers = al_soil.map(Number),
+                            //data : [arrayOfNumbers]
+                            data : {{al_soil}}
+                            //data: [6, 6, 7, 7, 9, 9, 67],
+                            //fill: false,
+                        }
+                    ]
+                    },
+                    options: {
+                        responsive: true,
+                        title:{
+                            display:true,
+                            text:'GRAPH'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    // the data minimum used for determining the ticks is Math.min(dataMin, suggestedMin)
+                                    suggestedMin: 10,
+        
+                                    // the data maximum used for determining the ticks is Math.max(dataMax, suggestedMax)
+                                    suggestedMax: 50
+                                }
+                            }]
+                        }
+                    }
+                };
+        
+                window.onload = function() {
+                    var ctx = document.getElementById("canvas").getContext("2d");
+                    window.myLine = new Chart(ctx, config);
+                };
+            </script>
+        </div>
+        </section>
+        <!--
+        End Meet Our Team
+        ==================================== -->
+
+        
+
+        <a href="javascript:void(0);" id="back-top"><i class="fa fa-angle-up fa-3x"></i></a>
+
+        <!-- Essential jQuery Plugins
+        ================================================== -->
+        <!-- Main jQuery -->
+        <script src="{% static "js/jquery-1.11.1.min.js" %}"></script>
+        <!-- Single Page Nav -->
+        <script src="{% static "js/jquery.singlePageNav.min.js" %}"></script>
+        <!-- Twitter Bootstrap -->
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <!-- jquery.fancybox.pack -->
+        <script src="{% static "js/jquery.fancybox.pack.js" %}"></script>
+        <!-- jquery.mixitup.min -->
+        <script src="{% static "js/jquery.mixitup.min.js" %}"></script>
+        <!-- jquery.parallax -->
+        <script src="{% static "js/jquery.parallax-1.1.3.js" %}"></script>
+        <!-- jquery.countTo -->
+        <script src="{% static "js/jquery-countTo.js" %}"></script>
+        <!-- jquery.appear -->
+        <script src="{% static "js/jquery.appear.js" %}"></script>
+        <!-- Contact form validation -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.32/jquery.form.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+        <!-- Google Map -->
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <!-- jquery easing -->
+        <script src="{% static "js/jquery.easing.min.js" %}"></script>
+        <!-- jquery easing -->
+        <script src="{% static "js/wow.min.js" %}"></script>
+        <script>
+            var wow = new WOW ({
+                boxClass:     'wow',      // animated element css class (default is wow)
+                animateClass: 'animated', // animation css class (default is animated)
+                offset:       120,          // distance to the element when triggering the animation (default is 0)
+                mobile:       false,       // trigger animations on mobile devices (default is true)
+                live:         true        // act on asynchronously loaded content (default is true)
+              }
+            );
+            wow.init();
+        </script>
+        <!-- Custom Functions -->
+        <script src="{% static "js/custom.js" %}"></script>
+
+        <script type="text/javascript">
+            $(function(){
+                /* ========================================================================= */
+                /*  Contact Form
+                /* ========================================================================= */
+
+                $('#contact-form').validate({
+                    rules: {
+                        name: {
+                            required: true,
+                            minlength: 2
+                        },
+                        email: {
+                            required: true,
+                            email: true
+                        },
+                        message: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        name: {
+                            required: "come on, you have a name don't you?",
+                            minlength: "your name must consist of at least 2 characters"
+                        },
+                        email: {
+                            required: "no email, no message"
+                        },
+                        message: {
+                            required: "um...yea, you have to write something to send this form.",
+                            minlength: "thats all? really?"
+                        }
+                    },
+                    submitHandler: function(form) {
+                        $(form).ajaxSubmit({
+                            type:"POST",
+                            data: $(form).serialize(),
+                            url:"process.php",
+                            success: function() {
+                                $('#contact-form :input').attr('disabled', 'disabled');
+                                $('#contact-form').fadeTo( "slow", 0.15, function() {
+                                    $(this).find(':input').attr('disabled', 'disabled');
+                                    $(this).find('label').css('cursor','default');
+                                    $('#success').fadeIn();
+                                });
+                            },
+                            error: function() {
+                                $('#contact-form').fadeTo( "slow", 0.15, function() {
+                                    $('#error').fadeIn();
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
+    </body>
+</html>
